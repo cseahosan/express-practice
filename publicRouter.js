@@ -9,12 +9,14 @@ const log = (req, res, next) => {
 
 publicRouter.all('*', log)
 
-publicRouter.get('/', (req, res) => {
-    res.send('this is home page');
+
+publicRouter.get('/:user', (req, res) => {
+    res.send(`this is home page. Dynamic parameter is ${req.params.user}`);
 })
 
-publicRouter.get('/about', (req, res) => {
-    res.send('this is about page');
-})
+// publicRouter.get('/about', (req, res) => {
+//     res.send(`this is about page`);
+// })
+
 
 module.exports = publicRouter
