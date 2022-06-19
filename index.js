@@ -2,6 +2,13 @@ const express = require('express');
 
 const app = express();
 
+const myMiddleware = (req, res, next) => {
+    console.log('I am logging');
+    next();
+}
+
+app.use(myMiddleware);
+
 app.get('/', (req, res) => {
     res.send('this is home page');
 })
