@@ -23,4 +23,13 @@ Mongo Commands:
 6. Delete: deleteOne/deleteMany
     db.products.deleteOne({name: "iPhone 10"})
 
-   
+
+Mongoose installation: yarn add mongoose
+Benifits:
+1. Abstraction from raw low level MongoDB
+2. Relationship between NoSQL Data
+3. Provice Schema Validation
+4. Object-Data Mapping-translation of data into object that our code upderstands and vice versa
+5. ~40-60% less code compared to raw mongodb package
+
+https://mongoosejs.com/docs/guide.html
