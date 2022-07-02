@@ -1,0 +1,26 @@
+Mongo Commands:
+1. show dbs //showing databases
+2. use ecommerce //creating database
+3. Create:
+    db.products.insertOne({name: "test name"}) // insert a product
+    db.products.insertMany([{name: "test name"}, {name: "test name 2"}]) // insert many product
+
+4. Read:
+    db.products.find()
+    db.products.find().pretty() // find all product
+
+    db.products.find({active:true, name: 'test'}).pretty(); // find by condition
+
+    db.products.find({active:true, name: 'test'}, {active: 0}).pretty(); // find by condition witprojections (ative field won't be select)
+
+    db.products.find().pretty().limit(1)
+    db.products.find().pretty().limit(1).skip(1)
+    db.products.findOne() // findOne cannot be use with pretty
+
+5. Update: update() method deprecated use updateOne/updateMany
+    db.products.updateOne({name: "iPhone 10"}, {$set: {price: "50000"}})
+
+6. Delete: deleteOne/deleteMany
+    db.products.deleteOne({name: "iPhone 10"})
+
+   
