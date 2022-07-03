@@ -39,6 +39,49 @@ router.get('/', (req, res) => {
         })
 });
 
+// get active todos
+router.get('/active', async (req, res) => {
+    const todo = new Todo();
+    const data = await todo.findActive().select({
+        _id: 0,
+        date: 0
+    })
+    res.status(200).json({
+        data
+    })
+});
+
+// get active todos using callback
+router.get('/active-callback', (req, res) => {
+    const todo = new Todo();
+    todo.findActiveCallback((err, data) => {
+        res.status(200).json({
+            data
+        })
+    })
+});
+
+// get filtered by js todos
+router.get('/js', async (req, res) => {
+    const data = await Todo.findByJS().select({
+        _id: 0,
+        date: 0
+    })
+    res.status(200).json({
+        data
+    })
+});
+
+// get todos by language
+router.get('/language', async (req, res) => {
+    const data = await Todo.find().byLanguage("js");
+    
+    res.status(200).json({
+        data
+    })
+});
+
+
 // GET A TODO by ID
 router.get("/:id", async (req, res) => {
     try {
