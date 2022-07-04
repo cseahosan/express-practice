@@ -7,25 +7,14 @@ const checkLogin = require("../middlewares/checkLogin");
 
 // get all the todos
 router.get('/', checkLogin, (req, res) => {
-    // await Todo.find({status: "active"}, (err, data) => {
-    //     if(err) {
-    //         res.status(500).json({
-    //             error: "There was a server side error !"
-    //         });
-    //     }else{
-    //         res.status(200).json({
-    //             result: data,
-    //             message: "Todo retrieved successfully !"
-    //         })
-    //     }
-    // })
-
     Todo.find({ status: "active" })
+        // .populate("user")
+        .populate("user", "name username -_id")
         .select({
             _id: 0,
             date: 0
         })
-        .limit(1)
+        // .limit(2)
         .exec((err, data) => {
             if (err) {
                 res.status(500).json({
@@ -98,19 +87,23 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST A TODO
-router.post("/", (req, res) => {
-    const newTodo = new Todo(req.body);
-    newTodo.save((err) => {
-        if (err) {
-            res.status(500).json({
-                error: "There was a server side error!",
-            });
-        } else {
-            res.status(200).json({
-                message: "Todo was inserted successfully!",
-            });
-        }
-    });
+router.post("/", checkLogin, async (req, res) => {
+    try {
+        const newTodo = new Todo({
+            ...req.body,
+            user: req.userId
+        });
+
+        await newTodo.save();
+
+        res.status(200).json({
+            message: "Todo was inserted successfully!",
+        });
+    } catch (err) {
+        res.status(500).json({
+            error: "There was a server side error!",
+        });
+    }
 });
 
 // POST MULTIPLE TODO
