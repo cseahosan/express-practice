@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
+const checkLogin = require("../middlewares/checkLogin");
+
 const userSchema = require("../schemas/userSchema");
 const User = new mongoose.model("User", userSchema);
 
@@ -30,14 +32,14 @@ router.post("/signup", async (req, res) => {
 
 // login
 router.post("/login", async (req, res) => {
-  
+
     try {
         const user = await User.find({
             username: req.body.username
         });
 
         if (user && user.length > 0) {
-            
+
             const isValidPassword = await bcrypt.compare(req.body.password, user[0].password)
             if (isValidPassword) {
                 //generate token
@@ -69,5 +71,24 @@ router.post("/login", async (req, res) => {
         })
     }
 });
+
+//get all users
+router.get('/all', async (req, res) => {
+    try {
+        const users = await User
+            .find()
+            .populate("todos", "title description -_id");
+
+        res.status(200).json({
+            "data": users
+        })
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            error: err
+        })
+    }
+})
 
 module.exports = router;
