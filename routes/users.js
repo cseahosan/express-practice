@@ -34,6 +34,7 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
 
     try {
+
         const user = await User.find({
             username: req.body.username
         });
@@ -42,9 +43,8 @@ router.post("/login", async (req, res) => {
 
             const isValidPassword = await bcrypt.compare(req.body.password, user[0].password)
             if (isValidPassword) {
-                //generate token
+                // generate token
                 // https://www.npmjs.com/package/jsonwebtoken
-
                 // https://www.npmjs.com/package/dotenv
                 const token = jwt.sign({
                     username: user[0].username,
@@ -65,6 +65,7 @@ router.post("/login", async (req, res) => {
                 message: "Authentication Failed!",
             });
         }
+
     } catch {
         res.status(500).json({
             message: "Failed to login !"
@@ -76,8 +77,7 @@ router.post("/login", async (req, res) => {
 router.get('/all', async (req, res) => {
     try {
         const users = await User
-            .find()
-            .populate("todos", "title description -_id");
+            .find();
 
         res.status(200).json({
             "data": users
